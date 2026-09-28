@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>KFC Việt Nam — Gà rán giòn ngon, đặt món trực tuyến</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Logo chữ tạm thời cho thương hiệu KFC Việt Nam — thay bằng logo ảnh thật trong style.css/ảnh riêng nếu có */
+    .brand{display:flex;align-items:baseline;gap:6px;text-decoration:none;line-height:1}
+    .brand-mark{font-family:'Inter',sans-serif;font-weight:800;font-size:28px;letter-spacing:1px;color:#e4002b;background:#fff;padding:2px 8px;border-radius:6px;border:2px solid #e4002b}
+    .brand-sub{font-weight:600;font-size:13px;color:#333;text-transform:uppercase}
+    .footer-logo{font-family:'Inter',sans-serif;font-weight:800;font-size:22px;color:#e4002b;letter-spacing:.5px}
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" onclick="go('home')" aria-label="KFC Việt Nam">
+        <span class="brand-mark">KFC</span><span class="brand-sub">Việt Nam</span>
+      </a>
+      <nav class="main-nav">
+        <a data-page="home" onclick="go('home')">Trang chủ</a>
+        <a data-page="menu" onclick="go('menu')">Thực đơn</a>
+        <a data-page="combo" onclick="go('combo')">Combo</a>
+        <a onclick="go('menu')">Khuyến mãi</a>
+        <a onclick="showToast('Trang liên hệ đang được hoàn thiện')">Liên hệ</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="nav-search"><svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-4-4"></path>
+          </svg><input placeholder="Tìm món ăn, combo..."
+            onkeydown="if(event.key==='Enter'){go('menu');document.getElementById('q').value=this.value;renderMenu()}">
+        </div>
+        <button class="icon-btn cart-trigger" onclick="openCart()" aria-label="Giỏ hàng"><svg viewBox="0 0 24 24">
+            <path d="M3 4h2l2.1 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H7"></path>
+            <circle cx="10" cy="20" r="1"></circle>
+            <circle cx="18" cy="20" r="1"></circle>
+          </svg><b id="count">0</b></button>
+        <button class="login-link" onclick="openModal('login')">Đăng nhập</button>
+        <button class="register-btn" onclick="register()">Đăng ký</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="page active">
+      <div class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-copy">
+          <div class="hero-kicker">GÀ RÁN <span></span> BÍ QUYẾT 11 LOẠI GIA VỊ</div>
+          <h1>KFC<br><strong>Vị ngon trên từng miếng gà</strong></h1>
+          <p>Khám phá thực đơn đa dạng, combo hấp dẫn và đặt món KFC trực tuyến nhanh chóng chỉ với vài thao tác.</p>
+          <div class="hero-search">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-4-4"></path>
+            </svg>
+            <input id="heroQ" placeholder="Tìm món ăn, combo..."
+              onkeydown="if(event.key==='Enter'){go('menu');document.getElementById('q').value=this.value;renderMenu()}">
+            <button
+              onclick="go('menu');document.getElementById('q').value=document.getElementById('heroQ').value;renderMenu()">Tìm
+              kiếm</button>
+          </div>
+        </div>
+        <div class="hero-arrows"><button>‹</button><button>›</button></div>
+        <div class="hero-dots"><i class="on"></i><i></i><i></i></div>
+      </div>
+
+      <section class="home-section categories-section">
+        <div class="categories">
+          <button class="category active" onclick="clearCategory()"><span class="cat-icon grid-icon">✚</span><b>Tất
+              cả</b></button>
+          <button class="category" onclick="filterCat('Burger')"><span class="cat-icon">♨</span><b>Burger</b></button>
+          <button class="category" onclick="filterCat('Khoai tây')"><span class="cat-icon">▥</span><b>Khoai
+              tây</b></button>
+          <button class="category" onclick="filterCat('Gà rán')"><span class="cat-icon">♨</span><b>Gà rán</b></button>
+          <button class="category" onclick="filterCat('Cơm')"><span class="cat-icon">◒</span><b>Cơm gà</b></button>
+          <button class="category" onclick="filterCat('Đồ uống')"><span class="cat-icon">▱</span><b>Đồ uống</b></button>
+          <button class="category" onclick="go('combo')"><span class="cat-icon">▦</span><b>Combo</b></button>
+          <button class="category" onclick="showToast('Khuyến mãi: giảm 10% cho đơn từ 150.000đ')"><span
+              class="cat-icon">⌁</span><b>Khuyến mãi</b></button>
+        </div>
+      </section>
+
+      <section class="home-section products-section">
+        <div class="section-heading">
+          <h2><span></span>Món ăn nổi bật</h2><a onclick="go('menu')">Xem tất cả <b>›</b></a>
+        </div>
+        <div id="featured" class="product-grid six"></div>
+      </section>
+
+      <section class="benefit-bar">
+        <div><strong>Đặt món</strong><span>Online dễ dàng</span></div>
+        <div><strong>Thanh toán</strong><span>COD · MoMo · VNPay · ZaloPay</span></div>
+        <div><strong>Theo dõi</strong><span>Cập nhật trạng thái đơn hàng</span></div>
+      </section>
+    </section>
+
+    <section id="menu" class="page">
+      <div class="inner page-content">
+        <div class="page-head">
+          <div>
+            <p>THỰC ĐƠN</p>
+            <h1>Tất cả món</h1>
+          </div><button class="outline-btn" onclick="clearFilters()">Xóa bộ lọc</button>
+        </div>
+        <div class="filter-row">
+          <div class="search-field"><svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-4-4"></path>
+            </svg><input id="q" placeholder="Tìm theo tên món..." oninput="renderMenu()"></div>
+          <select id="cat" onchange="renderMenu()">
+            <option value="">Tất cả loại</option>
+            <option>Burger</option>
+            <option>Khoai tây</option>
+            <option>Gà rán</option>
+            <option>Cơm</option>
+            <option>Đồ uống</option>
+          </select>
+          <select id="sort" onchange="renderMenu()">
+            <option value="">Sắp xếp</option>
+            <option value="low">Giá thấp → cao</option>
+            <option value="high">Giá cao → thấp</option>
+          </select>
+        </div>
+        <div id="menuGrid" class="product-grid four"></div>
+      </div>
+    </section>
+
+    <section id="combo" class="page">
+      <div class="inner page-content">
+        <div class="page-head">
+          <div>
+            <p>COMBO</p>
+            <h1>Combo tiết kiệm</h1>
+          </div>
+        </div>
+        <div id="comboGrid" class="product-grid four"></div>
+      </div>
+    </section>
+
+    <section id="orders" class="page">
+      <div class="inner page-content">
+        <div class="page-head">
+          <div>
+            <p>TÀI KHOẢN</p>
+            <h1>Đơn hàng của tôi</h1>
+          </div>
+        </div>
+        <div class="account-layout">
+          <aside class="account-side">
+            <div class="avatar">NA</div><b>Nguyễn Văn A</b><small>customer@demo.vn</small>
+            <button class="selected">Đơn hàng</button><button>Thông tin cá nhân</button><button
+              onclick="openModal('login')">Đăng xuất</button>
+          </aside>
+          <div id="ordersList" class="orders-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="admin" class="page">
+      <div class="inner page-content">
+        <div class="admin-head">
+          <div>
+            <p>ADMIN</p>
+            <h1>Quản lý cửa hàng</h1>
+          </div><button class="dark-btn" onclick="go('home')">← Site khách hàng</button>
+        </div>
+        <div class="stats">
+          <div><small>Doanh thu hôm nay</small><strong>4.280.000đ</strong><em>+12,4%</em></div>
+          <div><small>Đơn hàng mới</small><strong>18</strong><em>Hôm nay</em></div>
+          <div><small>Sản phẩm</small><strong>11</strong><em>Đang bán</em></div>
+          <div><small>Khách hàng</small><strong>126</strong><em>Tổng số</em></div>
+        </div>
+        <div class="admin-box">
+          <div class="tabs"><button class="on" onclick="adminTab('products',this)">Món ăn</button><button
+              onclick="adminTab('combos',this)">Combo</button><button onclick="adminTab('users',this)">Tài
+              khoản</button><button onclick="adminTab('adminorders',this)">Đơn hàng</button></div>
+          <div id="products" class="admin-panel on">
+            <div class="box-head">
+              <h2>Danh sách món ăn</h2><button class="dark-btn" onclick="showToast('Mở form thêm món')">+ Thêm
+                món</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tên món</th>
+                    <th>Loại</th>
+                    <th>Giá</th>
+                    <th>Trạng thái</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="ptable"></tbody>
+              </table>
+            </div>
+          </div>
+          <div id="combos" class="admin-panel">
+            <div class="box-head">
+              <h2>Danh sách combo</h2><button class="dark-btn" onclick="showToast('Mở form thêm combo')">+ Thêm
+                combo</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Combo</th>
+                    <th>Giá</th>
+                    <th>Thành phần</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Combo Burger Tiết Kiệm</td>
+                    <td>79.000đ</td>
+                    <td>Burger + Khoai + Pepsi</td>
+                    <td><button>Sửa</button> <button>Xóa</button></td>
+                  </tr>
+                  <tr>
+                    <td>Combo Gà Vui Vẻ</td>
+                    <td>99.000đ</td>
+                    <td>2 Gà + Khoai + Pepsi</td>
+                    <td><button>Sửa</button> <button>Xóa</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="users" class="admin-panel">
+            <div class="box-head">
+              <h2>Tài khoản người dùng</h2><button class="dark-btn" onclick="showToast('Mở form thêm tài khoản')">+
+                Thêm</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Vai trò</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Quản trị viên</td>
+                    <td>admin@demo.vn</td>
+                    <td>Admin</td>
+                    <td><button onclick="showToast('Không thể xóa Admin đang đăng nhập')">Xóa</button></td>
+                  </tr>
+                  <tr>
+                    <td>Nguyễn Văn A</td>
+                    <td>customer@demo.vn</td>
+                    <td>Customer</td>
+                    <td><button>Sửa</button> <button>Xóa</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="adminorders" class="admin-panel">
+            <div class="box-head">
+              <h2>Quản lý đơn hàng</h2>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Mã đơn</th>
+                    <th>Khách hàng</th>
+                    <th>Tổng</th>
+                    <th>Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>#HD024</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>128.000đ</td>
+                    <td><select>
+                        <option>Chưa giao</option>
+                        <option>Đang giao</option>
+                        <option>Đã giao</option>
+                      </select></td>
+                  </tr>
+                  <tr>
+                    <td>#HD023</td>
+                    <td>Trần Minh</td>
+                    <td>99.000đ</td>
+                    <td><select>
+                        <option>Đang giao</option>
+                        <option>Đã giao</option>
+                      </select></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-main inner">
+      <div class="footer-brand"><span class="footer-logo">KFC Việt Nam</span>
+        <p>Gà rán giòn ngon · Giao nhanh · Luôn bên bạn!</p>
+        <div class="socials"><i>f</i><i>◎</i><i>▶</i><i>♪</i></div>
+      </div>
+      <div>
+        <h4>Về chúng tôi</h4><a>Giới thiệu</a><a>Tuyển dụng</a><a>Liên hệ</a>
+      </div>
+      <div>
+        <h4>Hỗ trợ khách hàng</h4><a>Chính sách giao hàng</a><a>Chính sách đổi trả</a><a>Điều khoản sử dụng</a>
+      </div>
+      <div>
+        <h4>Phương thức thanh toán</h4>
+        <div class="payments"><span>momo</span><span>VNPay</span><span>ZaloPay</span><span>▣ Thẻ ngân hàng</span></div>
+      </div>
+    </div>
+    <div class="footer-bottom inner"><span>© 2026 KFC Việt Nam (bản demo học tập). All rights reserved.</span><button
+        onclick="scrollTo(0,0)">↑</button></div>
+  </footer>
+
+  <div id="shade" onclick="closeAll()"></div>
+  <aside id="cart">
+    <div class="drawer-head">
+      <h2>Giỏ hàng</h2><button onclick="closeAll()">×</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-bottom">
+      <div><span>Tạm tính</span><strong id="subtotal">0đ</strong></div><button class="red-btn full"
+        onclick="checkout()">Thanh toán</button>
+    </div>
+  </aside>
+
+  <div id="login" class="modal">
+    <button class="close-x" onclick="closeAll()">×</button>
+    <p class="eyebrow">TÀI KHOẢN</p>
+    <h2>Đăng nhập</h2>
+    <p>Chào mừng bạn quay lại KFC Việt Nam.</p>
+    <input id="email" placeholder="Email"><input id="pass" type="password" placeholder="Mật khẩu">
+    <button class="red-btn full" onclick="login()">Đăng nhập</button><button class="google-btn full"
+      onclick="showToast('Google Login là bản mô phỏng trong demo')">G&nbsp;&nbsp; Tiếp tục với Google</button>
+    <hr><button class="link-btn" onclick="register()">Tạo tài khoản mới</button>
+  </div>
+
+  <div id="checkout" class="modal checkout-modal">
+    <button class="close-x" onclick="closeAll()">×</button>
+    <p class="eyebrow">CHECKOUT</p>
+    <h2>Hoàn tất đơn hàng</h2>
+    <div class="checkout-grid">
+      <div><label>Họ và tên</label><input value="Nguyễn Văn A"><label>Số điện thoại</label><input
+          value="0901234567"><label>Địa chỉ giao hàng</label><textarea>Đà Nẵng</textarea></div>
+      <div><label>Phương thức thanh toán</label><label class="payment-option"><input type="radio" checked name="p">
+          Thanh toán khi nhận hàng</label><label class="payment-option"><input type="radio" name="p"> MoMo</label><label
+          class="payment-option"><input type="radio" name="p"> VNPay</label><label class="payment-option"><input
+            type="radio" name="p"> ZaloPay</label><button class="red-btn full" onclick="place()">Đặt hàng</button></div>
+    </div>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+
+</html>
