@@ -1,0 +1,100 @@
+[
+    {
+        "id": 1,
+        "name": "VinFast VF 3",
+        "brand": "VinFast",
+        "price": 299000000,
+        "category": "SUV"
+    },
+    {
+        "id": 2,
+        "name": "Tesla Model 3",
+        "brand": "Tesla",
+        "price": 1099000000,
+        "category": "Sedan"
+    },
+    {
+        "id": 3,
+        "name": "BYD Seal",
+        "brand": "BYD",
+        "price": 1119000000,
+        "category": "Sedan"
+    },
+    {
+        "id": 4,
+        "name": "VinFast VF 5 Plus",
+        "brand": "VinFast",
+        "price": 529000000,
+        "category": "SUV"
+    },
+    {
+        "id": 5,
+        "name": "VinFast VF 8",
+        "brand": "VinFast",
+        "price": 1019000000,
+        "category": "SUV"
+    },
+    {
+        "id": 6,
+        "name": "VinFast VF 9",
+        "brand": "VinFast",
+        "price": 1491000000,
+        "category": "SUV"
+    },
+    {
+        "id": 7,
+        "name": "Toyota Vios",
+        "brand": "Toyota",
+        "price": 458000000,
+        "category": "Sedan"
+    },
+    {
+        "id": 8,
+        "name": "Toyota Camry",
+        "brand": "Toyota",
+        "price": 1220000000,
+        "category": "Sedan"
+    },
+    {
+        "id": 9,
+        "name": "Honda CR-V",
+        "brand": "Honda",
+        "price": 1029000000,
+        "category": "SUV"
+    },
+    {
+        "id": 10,
+        "name": "Mazda CX-5",
+        "brand": "Mazda",
+        "price": 749000000,
+        "category": "SUV"
+    },
+    {
+        "id": 11,
+        "name": "Hyundai Accent",
+        "brand": "Hyundai",
+        "price": 426000000,
+        "category": "Sedan"
+    },
+    {
+        "id": 12,
+        "name": "Kia Carnival",
+        "brand": "Kia",
+        "price": 1199000000,
+        "category": "MPV"
+    },
+    {
+        "id": 13,
+        "name": "Ford Ranger",
+        "brand": "Ford",
+        "price": 669000000,
+        "category": "Bán tải"
+    },
+    {
+        "id": 14,
+        "name": "Tesla Model Y",
+        "brand": "Tesla",
+        "price": 1499000000,
+        "category": "SUV"
+    }
+]
